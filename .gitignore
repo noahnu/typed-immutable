@@ -1,0 +1,25 @@
+# dependency management
+node_modules
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/versions
+!.yarn/sdks
+.pnp.*
+
+# transient files
+*.tmp
+*.log
+.nyc_cache
+
+# build artifacts
+.nyc_output
+coverage
+raw-coverage
+lib
+artifacts
+*.junit.xml
+
+# this is configured via bootstrap script
+.vscode
