@@ -26,6 +26,8 @@ describe('getIn', () => {
             really_nested: { level1: { level2: 'value!' } },
         })
 
+        const a = obj.getIn(['abc'])
+
         expect(obj.getIn(['abc'])).toEqual('some value')
         expect(obj.getIn(['nested', 'key'])).toEqual('hi')
         expect(obj.getIn(['nested', 'someArray', 1])).toEqual(2)
