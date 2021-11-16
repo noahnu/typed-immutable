@@ -104,6 +104,28 @@ class Immutable<Schema extends PrimitiveObject | PrimitiveArray> {
         }
         return undefined
     }
+
+    set<K extends keyof AsImmutable<Schema>>(
+        key: K,
+        value: AsImmutable<Schema>[K],
+    ): Immutable<Schema> {
+        this.value[key] = value
+        return this
+    }
+
+    setIn<
+        P extends Paths<Schema>,
+        R extends AsImmutable<GetInSchema<Schema, P>>,
+    >([zeroth, ...rest]: P, value: R): Immutable<Schema> {
+        if (hasKey(this.value, zeroth)) {
+            const el = this.value[zeroth]
+            if (rest.length && el instanceof Immutable) {
+                return el.setIn(rest as any, value)
+            }
+            return this.set(zeroth, value as any)
+        }
+        return this
+    }
 }
 
 export default Immutable
