@@ -56,13 +56,6 @@ type GetInSchema<
     Keys extends Paths<Schema>,
 > = PickSplitPath<Schema, Keys>
 
-type S = {
-    abc: string
-    nested: { key: string; someArray: (string | number)[] }
-    really_nested: { level1: { level2: string } }
-}
-type B = GetInSchema<S, Paths<S>> // why is B unknown. Must be some intersection of Paths? need to filter it?
-
 function isBasePrimitive(value: unknown): value is BasePrimitive {
     return (
         value === undefined ||
@@ -98,10 +91,10 @@ class Immutable<Schema extends PrimitiveObject | PrimitiveArray> {
         return this.value[key]
     }
 
-    getIn<R = AsImmutable<GetInSchema<Schema, Paths<Schema>>>>([
-        zeroth,
-        ...rest
-    ]: Paths<Schema>): R | undefined {
+    getIn<
+        P extends Paths<Schema>,
+        R extends AsImmutable<GetInSchema<Schema, P>>,
+    >([zeroth, ...rest]: P): R | undefined {
         if (hasKey(this.value, zeroth)) {
             const el = this.value[zeroth]
             if (rest.length && el instanceof Immutable) {
